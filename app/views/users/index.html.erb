@@ -3,8 +3,6 @@
 	<% if @users.empty? %>
 		<%= tag(:div, "There are no users.") %>
 	<% else %>	
-		<% @users.each do |user| %>
-			<%= tag(:div, user.login, :class => 'user_row') %>
-		<% end %>
+		<%= partial :user, :with => @users, :as => :user %>
 	<% end %>
 <% end =%>
