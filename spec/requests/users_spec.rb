@@ -6,8 +6,12 @@ given "a user exists" do
     :params => { :user => User.generate_attributes })
 end
 
+given "there are no users" do
+	User.all.destroy!
+end
+
 describe "resource(:users)" do
-  describe "GET" do
+  describe "GET", :given =>"there are no users" do
     
     before(:each) do
       @response = request(resource(:users))
@@ -17,21 +21,24 @@ describe "resource(:users)" do
       @response.should be_successful
     end
 
-    it "contains a list of users" do
-      pending
-      @response.should have_xpath("//ul")
+    it "shows an empty page with no users" do
+			@response.should have_xpath("//div[@id='user_list']")
+      @response.should_not have_xpath("//div//div[@class='user_row']")
     end
     
   end
   
   describe "GET", :given => "a user exists" do
     before(:each) do
+			@joe = User.generate(:joe)
       @response = request(resource(:users))
     end
     
     it "has a list of users" do
-      pending
-      @response.should have_xpath("//ul/li")
+	    @response.should be_successful
+	 		@response.should contain(User.first.login)
+		 	@response.should contain(User.first(:login => @joe.login).login)
+			@response.should have_xpath("//div//div[@class='user_row']")
     end
   end
   
@@ -69,6 +76,10 @@ describe "resource(:users, :new)" do
   
   it "responds successfully" do
     @response.should be_successful
+		@response.should contain("Login")
+		@response.should contain("Password")
+		@response.should contain("Password again")
+		@response.should have_xpath("//input[@type='submit']")
   end
 end
 
@@ -79,6 +90,9 @@ describe "resource(@user, :edit)", :given => "a user exists" do
   
   it "responds successfully" do
     @response.should be_successful
+		user = User.first
+		@response.should have_xpath("//input[@value='#{user.login}']")
+		@response.should have_xpath("//input[@type='submit']")
   end
 end
 
@@ -102,7 +116,7 @@ describe "resource(@user)", :given => "a user exists" do
         :params => { :user => {:id => @user.id} })
     end
   
-    it "redirect to the article show action" do
+    it "redirect to the user show action" do
       @response.should redirect_to(resource(@user))
     end
   end
