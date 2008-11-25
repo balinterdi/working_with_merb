@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 given "a user exists" do
   User.all.destroy!
   request(resource(:users), :method => "POST", 
-    :params => { :user => { :id => nil }})
+    :params => { :user => User.generate_attributes })
 end
 
 describe "resource(:users)" do
@@ -38,7 +38,6 @@ describe "resource(:users)" do
   describe "a successful POST" do
     before(:each) do
       User.all.destroy!
-			# user = User.generate
       @response = request(resource(:users), :method => "POST", 
         :params => { :user => User.generate_attributes })
     end
@@ -92,6 +91,7 @@ describe "resource(@user)", :given => "a user exists" do
   
     it "responds successfully" do
       @response.should be_successful
+			@response.should contain(User.first.login)
     end
   end
   
