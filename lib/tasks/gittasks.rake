@@ -6,7 +6,7 @@ namespace :git do
 		end
 		commit_msg = ENV['msg']
 		repo_to_push_to = ENV['repos'].nil? ? 'origin' : ENV['repos']
-		system(%(git commit -asm '"#{commit_msg}"'))
+		system(%(git commit -asm '#{commit_msg}'))
 		system(%(git push #{repo_to_push_to} master))
 	end
 end
