@@ -1,0 +1,5 @@
+<h1>New recommendation</h1>
+<%= form_for @recommendation, :action => url(:controller => "recommendations") do %>
+	<div><%= text_field :recommendee_id, :label => "Recommended user" %></div>
+	<div><%= submit "Submit" %></div>
+<% end =%>
