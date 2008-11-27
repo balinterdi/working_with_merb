@@ -143,7 +143,8 @@ end
 
 describe "resource(@user, :recommendations, :new)", :given => "a user exists" do
 	before(:each) do
-    @response = request(resource(User.first, :recommendations, :new))
+    # @response = request(resource(User.first, :recommendations, :new))
+		@response = request(url(:new_user_recommendation, :user_id => User.first.id))
   end
   
 	it "responds successfully" do
@@ -153,21 +154,24 @@ describe "resource(@user, :recommendations, :new)", :given => "a user exists" do
 end
 
 describe "resource(@user, :recommendations)" do	
-	before(:each) do
-		@response = request(resource(User.first, :recommendations))
-	end
 	
 	describe "GET", :given => "james recommends joe" do
+		
+		before(:each) do
+			@james = User.first(:login => 'james_duncan')
+			@response = request(resource(User.first, :recommendations))
+		end
+		
 		it "shows a list of the user's recommendations" do
 			@response.should have_xpath("//ul//li")
 		end
 		
 		it "the list contains the names of the recommended users" do
-			user = User.first(:login => 'james_duncan')
-			User.first.recommendations.each do |recommendation|
+			@james.recommendations.each do |recommendation|
 				@response.should contain(recommendation.recommendee.name)
 			end
 		end
+		
 	end
 	
 end

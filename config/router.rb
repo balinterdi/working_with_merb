@@ -27,14 +27,13 @@
 
 Merb.logger.info("Compiling routes...")
 Merb::Router.prepare do
+  # RESTful routes
   # resources :recommendations, :keys => [:user_id, :recommendee_id]
   resources :users
+	resources :recommendations
 	resources :users do |users|
 		users.resources :recommendations
 	end
-  # resources :user
-  # RESTful routes
-  # resources :posts
   
   # Adds the required routes for merb-auth using the password slice
   slice(:merb_auth_slice_password, :name_prefix => nil, :path_prefix => "")
