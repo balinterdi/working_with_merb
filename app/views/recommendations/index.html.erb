@@ -1,9 +1,6 @@
 <h1>Recommended users</h1>
 <div>
 	<ul>
-	<!-- <li>Joe D. Smith</li>	 -->
-	<% @recommendations.each do |rec| %>
-		<li><%= "#{rec.user.name} recommends #{rec.recommendee.name}" %></li>
-	<% end %>
+	<%= partial :recommendation, :as => :recommendation, :with => @recommendations %>
 	</ul>
 </div>
