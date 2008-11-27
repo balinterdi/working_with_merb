@@ -22,7 +22,3 @@ Spec::Runner.configure do |config|
   config.include(Merb::Test::ControllerHelper)
 end
 
-# def valid_user
-# 	{ :login => 'joe', :password => 'let_joe_pass', :password_confirmation => 'let_joe_pass' }
-# end
-

@@ -15,4 +15,10 @@ class User
   property :login,  String, :nullable => false, :length => (4..50)
   property :email,	String, :nullable => false, :format => :email_address, :length => (1..200)
 	property :blog_url, String, :format => :url
+	property :name, String, :nullable => false, :length => (2..100), :format => /^[[:alpha:]]+\s+[[:alpha:]]+(\.?\s+[[:alpha:]]+)*$/
+
+	has 0..n, :recommendations
+	has 0..n, :recommendees, :through => :recommendations, :class_name => "User", :child_key => [:user_id]
+	has 0..n, :recommended_by, :through => :recommendations, :class_name => "User", :child_key => [:recommendee_id], :remote_name => :user
+	
 end

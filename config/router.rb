@@ -27,7 +27,11 @@
 
 Merb.logger.info("Compiling routes...")
 Merb::Router.prepare do
+  # resources :recommendations, :keys => [:user_id, :recommendee_id]
   resources :users
+	resources :users do |users|
+		users.resources :recommendations
+	end
   # resources :user
   # RESTful routes
   # resources :posts
