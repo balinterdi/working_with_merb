@@ -1,15 +1,32 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
 given "a user exists" do
-	# puts "XXX given block runs"
   User.all.destroy!
   request(resource(:users), :method => "POST", 
-    :params => { :user => User.generate_attributes(:james) })
+    :params => { :user => User.gen_attrs(:james) })
 end
 
 given "there are no users" do
 	User.all.destroy!
 end
+
+given "two users exist" do
+	User.all.destroy!
+  request(resource(:users), :method => "POST", 
+    :params => { :user => User.gen_attrs(:james) })
+  request(resource(:users), :method => "POST", 
+    :params => { :user => User.gen_attrs(:joe) })
+end
+
+given "james recommends joe" do
+	User.all.destroy!
+  Recommendation.all.destroy!
+	james = User.generate(:james)
+	joe = User.generate(:joe)
+  request(resource(james, :recommendations), :method => "POST", 
+    :params => { :recommendation => {:user_id => james.id, :recommendee_id => joe.id }})
+end
+
 
 describe "resource(:users)" do
   describe "GET", :given =>"there are no users" do
@@ -31,7 +48,6 @@ describe "resource(:users)" do
   
   describe "GET", :given => "a user exists" do
     before(:each) do
-			# puts "XXX before method runs"
 			@joe = User.generate(:joe)
       @response = request(resource(:users))
     end
@@ -125,3 +141,33 @@ describe "resource(@user)", :given => "a user exists" do
   
 end
 
+describe "resource(@user, :recommendations, :new)", :given => "a user exists" do
+	before(:each) do
+    @response = request(resource(User.first, :recommendations, :new))
+  end
+  
+	it "responds successfully" do
+		@response.should be_successful
+		@response.should have_xpath("//input[@type='text']")
+	end
+end
+
+describe "resource(@user, :recommendations)" do	
+	before(:each) do
+		@response = request(resource(User.first, :recommendations))
+	end
+	
+	describe "GET", :given => "james recommends joe" do
+		it "shows a list of the user's recommendations" do
+			@response.should have_xpath("//ul//li")
+		end
+		
+		it "the list contains the names of the recommended users" do
+			user = User.first(:login => 'james_duncan')
+			User.first.recommendations.each do |recommendation|
+				@response.should contain(recommendation.recommendee.name)
+			end
+		end
+	end
+	
+end
