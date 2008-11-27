@@ -1,11 +1,11 @@
 require 'dm-sweatshop'
 
-User.fixture{{
-	:login => 'iamone',
-	:password => 'i_am_one',
-	:password_confirmation => 'i_am_one',
-	:email => 'one@one.com',
-	:name  => 'James One'
+User.fixture(:james){{
+	:login => 'james_duncan',
+	:password => 'james_secret',
+	:password_confirmation => 'james_secret',
+	:email => 'james@email.org',
+	:name  => 'James Duncan'
 }}
 
 User.fixture(:joe) {{

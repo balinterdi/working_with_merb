@@ -1,9 +1,10 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
 given "a user exists" do
+	# puts "XXX given block runs"
   User.all.destroy!
   request(resource(:users), :method => "POST", 
-    :params => { :user => User.generate_attributes })
+    :params => { :user => User.generate_attributes(:james) })
 end
 
 given "there are no users" do
@@ -30,6 +31,7 @@ describe "resource(:users)" do
   
   describe "GET", :given => "a user exists" do
     before(:each) do
+			# puts "XXX before method runs"
 			@joe = User.generate(:joe)
       @response = request(resource(:users))
     end
@@ -46,7 +48,7 @@ describe "resource(:users)" do
     before(:each) do
       User.all.destroy!
       @response = request(resource(:users), :method => "POST", 
-        :params => { :user => User.generate_attributes })
+        :params => { :user => User.generate_attributes(:james) })
     end
     
     it "redirects to resource(:users)" do
