@@ -18,7 +18,7 @@ given "two users exist" do
     :params => { :user => User.gen_attrs(:joe) })
 end
 
-given "james recommends joe" do
+given "a user recommends another user" do
 	User.all.destroy!
   Recommendation.all.destroy!
 	james = User.generate(:james)
@@ -155,7 +155,7 @@ end
 
 describe "resource(@user, :recommendations)" do	
 	
-	describe "GET", :given => "james recommends joe" do
+	describe "GET", :given => "a user recommends another user" do
 		
 		before(:each) do
 			@james = User.first(:login => 'james_duncan')
