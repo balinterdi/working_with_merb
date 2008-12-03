@@ -117,3 +117,18 @@ a:hover {
 #main-container ul {
   margin-left: 3.0em;
 }
+
+#site_title {
+/*  font-variant: all-caps;*/
+  font-size: 3em;
+  text-align: center;
+  color: green;
+}
+
+.message_notice {
+  color: green;
+}
+
+.message_error {
+  color: red;
+}

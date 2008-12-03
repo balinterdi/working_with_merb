@@ -1,34 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
-given "a user exists" do
-  User.all.destroy!
-  request(resource(:users), :method => "POST", 
-    :params => { :user => User.gen_attrs(:james) })
-end
-
-given "there are no users" do
-	User.all.destroy!
-end
-
-given "two users exist" do
-	User.all.destroy!
-  request(resource(:users), :method => "POST", 
-    :params => { :user => User.gen_attrs(:james) })
-  request(resource(:users), :method => "POST", 
-    :params => { :user => User.gen_attrs(:joe) })
-end
-
-given "a user recommends another user" do
-	User.all.destroy!
-  Recommendation.all.destroy!
-	james = User.generate(:james)
-	joe = User.generate(:joe)
-  request(resource(james, :recommendations), :method => "POST", 
-    :params => { :recommendation => {:user_id => james.id, :recommendee_id => joe.id }})
-end
-
-
 describe "resource(:users)" do
+  #FIXME these should be routed to admin/users
   describe "GET", :given =>"there are no users" do
     
     before(:each) do
@@ -36,10 +9,12 @@ describe "resource(:users)" do
     end
     
     it "responds successfully" do
+      pending
       @response.should be_successful
     end
 
     it "shows an empty page with no users" do
+      pending
 			@response.should have_xpath("//div[@id='user_list']")
       @response.should_not have_xpath("//div//div[@class='user_row']")
     end
@@ -53,6 +28,7 @@ describe "resource(:users)" do
     end
     
     it "has a list of users" do
+      pending
 	    @response.should be_successful
 	 		@response.should contain(User.first.login)
 		 	@response.should contain(User.first(:login => @joe.login).login)
@@ -75,17 +51,26 @@ describe "resource(:users)" do
 end
 
 describe "resource(@user)" do 
-  describe "a successful DELETE", :given => "a user exists" do
-     before(:each) do
-       @response = request(resource(User.first), :method => "DELETE")
-     end
-
-     it "should redirect to the index action" do
-       @response.should redirect_to(resource(:users))
-     end
-
-   end
+  describe "DELETE" do
+      
+    describe "when user is not logged in" do
+      it "should not be accessible for the user without logging in" do
+        @response = request(resource(User.first), :method => "DELETE")
+        @response.status.should == 401
+      end
+    end
+              
+    describe "when user is logged in", :given => "an authenticated user" do
+      it "should redirect to the home page" do
+        @response = request(resource(User.first), :method => "DELETE")
+        @response.should redirect_to(url(:home))
+      end
+    end
+    
+  end
 end
+
+
 
 describe "resource(:users, :new)" do
   before(:each) do
@@ -94,23 +79,32 @@ describe "resource(:users, :new)" do
   
   it "responds successfully" do
     @response.should be_successful
-		@response.should contain("Login")
-		@response.should contain("Password")
-		@response.should contain("Password again")
-		@response.should have_xpath("//input[@type='submit']")
+		@response.should have_selector("input#user_name[type='text']")
+		@response.should have_selector("input#user_email[type='text']")
+		@response.should have_selector("input#user_login[type='text']")
+		@response.should have_selector("input#user_password[type='password']")
+		@response.should have_selector("input#user_password_confirmation[type='password']")		
+		@response.should have_selector("input[type='submit']")
   end
 end
 
 describe "resource(@user, :edit)", :given => "a user exists" do
-  before(:each) do
-    @response = request(resource(User.first, :edit))
+
+  describe "if the user is NOT logged in" do
+    it "he is denied access" do
+      @response = request(resource(User.first, :edit))      
+      @response.status.should == 401
+    end
   end
-  
-  it "responds successfully" do
-    @response.should be_successful
-		user = User.first
-		@response.should have_xpath("//input[@value='#{user.login}']")
-		@response.should have_xpath("//input[@type='submit']")
+
+  describe "if the user is logged in", :given => "an authenticated user"  do
+    it "responds successfully" do
+      @response = request(resource(User.first, :edit))      
+      @response.should be_successful
+  		user = User.first
+  		@response.should have_xpath("//input[@value='#{user.login}']")
+  		@response.should have_xpath("//input[@type='submit']")
+    end
   end
 end
 
@@ -128,15 +122,25 @@ describe "resource(@user)", :given => "a user exists" do
   end
   
   describe "PUT" do
-    before(:each) do
-      @user = User.first
-      @response = request(resource(@user), :method => "PUT", 
-        :params => { :user => {:id => @user.id} })
+    
+    describe "if the user is NOT logged in" do
+      it "he should be denied access" do
+        user = User.first
+        @response = request(resource(user), :method => "PUT",
+          :params => { :user => {:id => user.id} })
+        @response.status.should == 401
+      end
     end
-  
-    it "redirect to the user show action" do
-      @response.should redirect_to(resource(@user))
+    
+    describe "if the user is logged in", :given => "an authenticated user" do
+      it "redirects to the user show action" do
+        user = User.first
+        @response = request(resource(user), :method => "PUT",
+          :params => { :user => {:id => user.id} })
+        @response.should redirect_to(resource(user))
+      end
     end
+    
   end
   
 end
@@ -172,6 +176,20 @@ describe "resource(@user, :recommendations)" do
 			end
 		end
 		
-	end
+	end	
 	
+	describe "a successful POST to create a new recommendation", :given => "two users exist"  do
+    before(:each) do
+      @james = User.pick(:james)
+      @joe = User.pick(:joe)
+      @response = request(resource(@james, :recommendations), :method => "POST", 
+        :params => { :recommendation => { :user_id => @james.id, :recommendee_id => @joe.id }} )
+    end
+    
+    it "redirects to resource(:users)" do
+      @response.should redirect_to(resource(@james, :recommendations))
+    end
+    
+  end
+  
 end

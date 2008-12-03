@@ -30,9 +30,8 @@ class Recommendations < Application
   def create(recommendation)
     @recommendation = Recommendation.new(recommendation)
     if @recommendation.save
-			#TODO: make the @recommendation resource valid by declaring recommendations as resources in the router file
-      # redirect resource(@recommendation), :message => {:notice => "Recommendation was successfully created"}
-			redirect url(:controller => :recommendations)
+      redirect url(:user_recommendations, :user_id => params[:user_id]), 
+        :message => {:notice => "Recommendation was successfully created"}
     else
       message[:error] = "Recommendation failed to be created"
       render :new

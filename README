@@ -1,5 +1,8 @@
 TODOS:
 
-- a user should not be able to recommend himself
 - authenticate for user tasks
 - making a nice layout for all views
+
+DONE:
+
+- a user should not be able to recommend himself

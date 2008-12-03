@@ -22,3 +22,36 @@ Spec::Runner.configure do |config|
   config.include(Merb::Test::ControllerHelper)
 end
 
+given "there are no users" do
+	User.all.destroy!
+end
+
+given "a user exists" do
+  User.all.destroy!
+  request(resource(:users), :method => "POST", 
+    :params => { :user => User.gen_attrs(:james) })
+end
+
+given "an authenticated user" do
+  User.all.destroy!
+  james = User.gen(:james)
+  response = request(url(:perform_login), :method => "PUT", :params => { :login => james.login, :password => james.password })
+  response.should redirect
+end
+
+given "two users exist" do
+	User.all.destroy!
+  request(resource(:users), :method => "POST", 
+    :params => { :user => User.gen_attrs(:james) })
+  request(resource(:users), :method => "POST", 
+    :params => { :user => User.gen_attrs(:joe) })
+end
+
+given "a user recommends another user" do
+	User.all.destroy!
+  Recommendation.all.destroy!
+	james = User.generate(:james)
+	joe = User.generate(:joe)
+  request(resource(james, :recommendations), :method => "POST", 
+    :params => { :recommendation => {:user_id => james.id, :recommendee_id => joe.id }})
+end

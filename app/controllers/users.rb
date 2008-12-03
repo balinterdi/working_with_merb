@@ -1,5 +1,6 @@
 class Users < Application
   # provides :xml, :yaml, :js
+  before :ensure_authenticated, :exclude => [:new, :create, :show]
 
   def index
     @users = User.all
@@ -28,7 +29,7 @@ class Users < Application
   def create(user)
     @user = User.new(user)
     if @user.save
-      redirect resource(@user), :message => "User was successfully created"
+      redirect resource(@user), :message => { :notice => "User was successfully created" }
 			# redirect resource(:users), :message => {:notice => "User was successfully created"}
     else
       message[:error] = "User failed to be created"
@@ -50,7 +51,7 @@ class Users < Application
     @user = User.get(id)
     raise NotFound unless @user
     if @user.destroy
-      redirect resource(:users)
+      redirect url(:home)
     else
       raise InternalServerError
     end
