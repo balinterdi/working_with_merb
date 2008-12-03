@@ -1,5 +1,6 @@
 class Users < Application
   # provides :xml, :yaml, :js
+  controlling :users 
   before :ensure_authenticated, :exclude => [:new, :create, :show]
 
   def index
