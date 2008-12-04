@@ -29,12 +29,15 @@ Merb.logger.info("Compiling routes...")
 Merb::Router.prepare do
   # RESTful routes
   # resources :recommendations, :keys => [:user_id, :recommendee_id]
+  match("/users", :method => :get).to(:controller => "admin/users")
+  match("/recommendations", :method => :get).to(:controller => "admin/recommendations")	
+    
   resources :users
   resources :recommendations
 	resources :users do |users|
 		users.resources :recommendations
 	end
-	
+
 	# admin routes
   namespace :admin do |admin|
     admin.resources :users
@@ -54,6 +57,7 @@ Merb::Router.prepare do
   slice(:merb_auth_slice_password, :name_prefix => nil, :path_prefix => "")
 
   match("/").to(:controller => "home", :action => "index").name("home")
+
   # This is the default route for /:controller/:action/:id
   # This is fine for most cases.  If you're heavily using resource-based
   # routes, you may want to comment/remove this line to prevent

@@ -1,38 +1,20 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
 describe "resource(:users)" do
-  #FIXME these should be routed to admin/users
-  describe "GET", :given =>"there are no users" do
-    
-    before(:each) do
-      @response = request(resource(:users))
-    end
-    
-    it "responds successfully" do
-      pending
-      @response.should be_successful
-    end
-
-    it "shows an empty page with no users" do
-      pending
-			@response.should have_xpath("//div[@id='user_list']")
-      @response.should_not have_xpath("//div//div[@class='user_row']")
-    end
-    
-  end
   
-  describe "GET", :given => "a user exists" do
+  describe "GET", :given => "two users exist" do
     before(:each) do
-			@joe = User.generate(:joe)
       @response = request(resource(:users))
     end
-    
+    #TODO: /users is routed to /admin/users so this test
+    # is the same as the admin controller one, not very DRY.
     it "has a list of users" do
-      pending
-	    @response.should be_successful
-	 		@response.should contain(User.first.login)
-		 	@response.should contain(User.first(:login => @joe.login).login)
-			@response.should have_xpath("//div//div[@class='user_row']")
+      User.all.each do |u|
+        @response.should contain(u.name)
+        @response.should contain(u.login)
+        @response.should contain(u.email)
+      end
+      
     end
   end
   
