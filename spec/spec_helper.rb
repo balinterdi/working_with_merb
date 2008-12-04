@@ -41,10 +41,8 @@ end
 
 given "two users exist" do
 	User.all.destroy!
-  request(resource(:users), :method => "POST", 
-    :params => { :user => User.gen_attrs(:james) })
-  request(resource(:users), :method => "POST", 
-    :params => { :user => User.gen_attrs(:joe) })
+	User.gen(:james)
+	User.gen(:joe)
 end
 
 given "a user recommends another user" do

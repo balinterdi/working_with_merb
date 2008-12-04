@@ -1,19 +1,23 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
-describe "/admin" do
+describe "/admin/users" do
   before(:each) do
     @response = request("/admin")
   end
   
-  describe "has a list of users" do
+  describe "GET" do
     before(:each) do
-      @response = request(url(:admin_users), :method => :get)
+      @response = request(url(:admin_users))
     end
-    it "shows a list of all users" do
-      pending
+    it "shows a list of all users", :given => "two users exist" do      
       @response.should be_successful
-      @response.should contain("admin_users_index")
+      User.all.each do |u|
+        @response.should contain(u.name)
+        @response.should contain(u.login)
+        @response.should contain(u.email)
+      end
     end
+       
   end
   
 end

@@ -36,10 +36,19 @@ Merb::Router.prepare do
 	end
 	
 	# admin routes
-  namespace :admin do
-    resources :users, :controller => Admin::Users
-    resources :recommendations, :controller => Admin::Recommendations
+  namespace :admin do |admin|
+    admin.resources :users
+    admin.resources :recommendations
   end
+  
+  # r.namespace :admin do |admin|
+  #   admin.resource :configurations
+  #   admin.resources :dashboard
+  #   admin.resources :categories
+  #   admin.resources :plugins
+  #   admin.resources :articles
+  #   admin.match("").to(:controller => "dashboard", :action => "index")
+  # end  
   
   # Adds the required routes for merb-auth using the password slice
   slice(:merb_auth_slice_password, :name_prefix => nil, :path_prefix => "")

@@ -1,7 +1,8 @@
 module Admin
   class Users < Application
     def index
-      "admin_users_index"
+      @users = User.all
+      display @users
     end
   
   end
