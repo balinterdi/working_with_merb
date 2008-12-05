@@ -28,8 +28,7 @@ end
 
 given "a user exists" do
   User.all.destroy!
-  request(resource(:users), :method => "POST", 
-    :params => { :user => User.gen_attrs(:james) })
+  User.gen(:james)
 end
 
 given "an authenticated user" do
@@ -43,6 +42,12 @@ given "two users exist" do
 	User.all.destroy!
 	User.gen(:james)
 	User.gen(:joe)
+end
+
+given "an authenticated admin user" do
+  User.all.destroy!
+  admin = User.gen(:admin)
+  response = request(url(:perform_login), :method => "PUT", :params => { :login => admin.login, :password => admin.password })
 end
 
 given "a user recommends another user" do

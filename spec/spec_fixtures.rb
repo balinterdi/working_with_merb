@@ -16,3 +16,12 @@ User.fixture(:joe) {{
 	:name => 'Joe D. Smith'
 	# :blog_url => 'http://joe.myname.com'
 }}
+
+User.fixture(:admin) {{
+	:login => 'admin',
+	:password => 'admin_secret',
+	:password_confirmation => 'admin_secret',
+	:email => 'console@linux.org',
+	:name  => 'Admin User',
+	:role => "admin",  
+}}

@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
 describe "resource(:users)" do
   
-  describe "GET", :given => "two users exist" do
+  describe "GET", :given => "an authenticated admin user" do
     before(:each) do
       @response = request(resource(:users))
     end
@@ -129,7 +129,6 @@ end
 
 describe "resource(@user, :recommendations, :new)", :given => "a user exists" do
 	before(:each) do
-    # @response = request(resource(User.first, :recommendations, :new))
 		@response = request(url(:new_user_recommendation, :user_id => User.first.id))
   end
   

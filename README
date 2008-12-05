@@ -1,8 +1,9 @@
 TODOS:
 
-- authenticate for user tasks
-- making a nice layout for all views
+- making a nice layout for all views (see feather)
 
 DONE:
 
 - a user should not be able to recommend himself
+- authenticate for user tasks
+- check that admin actions are only available to admins

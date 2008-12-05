@@ -37,5 +37,13 @@ describe User do
 		@james.should be_valid
 	end
 	
+	it "is not admin if it does not have an admin role" do
+	  @james.should_not be_admin
+  end
+	
+	it "is admin if has the admin role" do
+	  @james.set_admin
+	  @james.should be_admin
+  end
 
 end
