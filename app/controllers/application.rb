@@ -4,8 +4,11 @@ class Application < Merb::Controller
     if admin_user?
       session.user
     else
-      raise Unauthorized
-      # raise Unauthenticated
+      #TODO: Unauthorized would be more appropriate
+      # but then user receives error and not
+      # the login screen
+      # raise Unauthorized
+      raise Unauthenticated
     end
   end
   
