@@ -3,7 +3,8 @@ module Admin
     
     before :ensure_admin
     def index
-      "admin_recommendations_index"
+      @recommendations = Recommendation.all
+      display @recommendations
     end
   end
 end

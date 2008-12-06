@@ -1,5 +1,7 @@
 require 'dm-sweatshop'
 
+
+
 User.fixture(:james){{
 	:login => 'james_duncan',
 	:password => 'james_secret',

@@ -8,7 +8,7 @@ namespace :test do
 	
 	desc "Generates model objects in the database (e.g like populate)"
 	task :populate do
-		require File.join(File.dirname('__FILE__'), '/spec/spec_populator')    
-
+		require File.join(File.dirname('__FILE__'), '/spec/spec_populator')
+		SpecPopulator.populate!(:users => 10, :recommendations => 40)
   end
 end

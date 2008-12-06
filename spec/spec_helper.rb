@@ -15,6 +15,7 @@ Merb.start_environment(:testing => true, :adapter => 'runner', :environment => E
 
 # load dm-sweatshop fixtures
 require File.join(File.dirname(__FILE__), 'spec_fixtures')
+require File.join(File.dirname(__FILE__), 'spec_populator')
 
 Spec::Runner.configure do |config|
   config.include(Merb::Test::ViewHelper)
@@ -45,7 +46,7 @@ given "two users exist" do
 end
 
 given "an authenticated admin user" do
-  User.all.destroy!
+  # User.all.destroy!
   admin = User.gen(:admin)
   response = request(url(:perform_login), :method => "PUT", :params => { :login => admin.login, :password => admin.password })
 end

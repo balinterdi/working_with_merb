@@ -41,8 +41,13 @@ describe "/admin/users" do
 end
 
 describe "/admin/recommendations" do
-  
-  describe "GET", :given => "two users exist" do
+  before(:each) do
+    User.all.destroy!
+  	@james = User.generate(:james)
+  	@joe = User.generate(:joe)	  	
+  end
+    
+  describe "GET" do
     
     describe "when the user is not authenticated" do
       it "denies access to that page" do
@@ -58,12 +63,27 @@ describe "/admin/recommendations" do
       end
     end
 
-    describe "when an admin user is logged in", :given => "an authenticated admin user" do
-      it "shows a list of all users" do
-        response = request(url(:admin_recommendations)) 
-        response.should be_successful
-        response.body.should contain("admin_recommendations_index")
+    describe "when an admin user is logged in" do
+      
+      before(:each) do
+        # @james.recommendations.create(:recommendee => @joe)
+        User.all.destroy!
+        Recommendation.all.destroy!
+        SpecPopulator.populate!(:users => 5, :recommendations => 2)
       end
+      
+      describe "and there are recommendations", :given => "an authenticated admin user" do        
+        it "shows a list of all users" do
+          response = request(url(:admin_recommendations)) 
+          response.should be_successful
+          2.times do
+            rec = Recommendation.pick
+            response.body.should contain(rec.user.name)
+            response.body.should contain(rec.recommendee.name)
+          end
+        end
+      end
+      
     end
        
   end
