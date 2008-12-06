@@ -1,6 +1,7 @@
 class Recommendations < Application
   # provides :xml, :yaml, :js
-
+  before :ensure_authenticated
+  
   def index
 		find_opts = {}
 		find_opts[:user_id] = params[:user_id] unless params[:user_id].nil?

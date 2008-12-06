@@ -1,6 +1,6 @@
+<% require_js 'jquery' %>
 <h1>New recommendation</h1>
 <%= error_messages_for @recommendation %>
-<%#= form_for @recommendation, :action => url(:controller => "recommendations") do %>
 <%= form_for @recommendation, :action => url(:user_recommendations, :user_id => params[:user_id]) do %>
 	<%= hidden_field :user_id, :value => params[:user_id] %>
 	<div><%= text_field :recommendee_id, :label => "Recommended user" %></div>

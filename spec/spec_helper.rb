@@ -55,6 +55,7 @@ given "a user recommends another user" do
 	User.all.destroy!
   Recommendation.all.destroy!
 	james = User.generate(:james)
+	puts "XXX james's id: #{james.id}"
 	joe = User.generate(:joe)
   request(resource(james, :recommendations), :method => "POST", 
     :params => { :recommendation => {:user_id => james.id, :recommendee_id => joe.id }})

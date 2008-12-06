@@ -1,6 +1,11 @@
 TODOS:
 
+- write specs for actions of recommendations.rb being protected
+- make box on recommendation box accept a name
+- user should not be able to act as another user (e.g see his recommendations, create a recomm. in his name, etc.)
 - making a nice layout for all views (see feather)
+- make name box on recommendation page auto-complete
+
 
 DONE:
 

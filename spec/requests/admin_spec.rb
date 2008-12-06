@@ -73,7 +73,7 @@ describe "/admin/recommendations" do
       end
       
       describe "and there are recommendations", :given => "an authenticated admin user" do        
-        it "shows a list of all users" do
+        it "shows a list of all recommendations" do
           response = request(url(:admin_recommendations)) 
           response.should be_successful
           2.times do
