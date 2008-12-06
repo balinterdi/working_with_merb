@@ -69,7 +69,9 @@ describe "/admin/recommendations" do
         # @james.recommendations.create(:recommendee => @joe)
         User.all.destroy!
         Recommendation.all.destroy!
-        SpecPopulator.populate!(:users => 5, :recommendations => 2)
+        SpecPopulator.populate!(:users => 8, :recommendations => 5)
+        # puts "XXX User ids: #{User.all.collect {|u| u.id}.inspect}"
+        # puts "XXX Recomendation ids: #{Recommendation.all.collect {|r| [r.user_id, r.recommendee_id]}.inspect }"
       end
       
       describe "and there are recommendations", :given => "an authenticated admin user" do        

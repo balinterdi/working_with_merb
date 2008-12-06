@@ -26,7 +26,14 @@ describe Recommendation do
 	it "a user can not recommend himself" do
 	  @james.recommendations.create(:recommendee => @james)
 	  @james.recommendations.should_not be_valid
-	  
   end
-	
+
+  describe "when created by name" do
+    it "should be successful if there is only one user with that name" do
+      Recommendation.create(:user => @james, :recommendee_name => @joe.name)
+      @james.recommendees.should include(@joe)
+    end
+    
+  end
+  
 end

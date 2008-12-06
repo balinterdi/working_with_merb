@@ -24,25 +24,23 @@ class SpecPopulator
   #NOTE: recommendations can not be created from the User.fixture call
   # since those would want to pick from users which are not yet generated.
   Recommendation.fixture {{
-    :user => User.pick,
-    :recommendee => User.pick,
+    :user => (user = User.pick),
+    :recommendee => self.pick_another_user(user),
   }}
 
+  def self.pick_another_user(user)
+    begin
+      picked_user = User.pick
+    end until picked_user != user
+    picked_user
+  end
+  
   def self.generate_users(n)
     n.of { User.gen }
   end
 
   def self.generate_recommendations(n)
-    n.of do
-      begin
-        Recommendation.gen
-      rescue => e
-        #NOTE: duplicate keys (same user-recommendee pair)
-        # will likely occur. The easiest thing is just to
-        # ignore these errors.
-        # DataMapper.logger.error(e)
-      end
-    end    
+    n.of { Recommendation.gen }        
   end
   
   def self.populate!(options={})

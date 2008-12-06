@@ -47,12 +47,15 @@ describe "resource(@user, :recommendations)" do
       
   		before(:each) do
   		  @response = request(url(:perform_login), :method => "PUT", :params => { :login => @james.login, :password => @james.password })
-  		  request(resource(@james, :recommendations), :method => "POST", 
-          :params => { :recommendation => {:user_id => @james.id, :recommendee_id => @joe.id }})  			
-  			@response = request(resource(@james, :recommendations))
   		end
       
       describe "and there is at least one recommendation" do
+        before(:each) do
+          request(resource(@james, :recommendations), :method => "POST", 
+            :params => { :recommendation => {:user_id => @james.id, :recommendee_id => @joe.id }})  			
+    			@response = request(resource(@james, :recommendations))
+  		  end
+          
     		it "shows a list of the user's recommendations" do
     		  @response.should be_successful
     			@response.should have_xpath("//ul//li")

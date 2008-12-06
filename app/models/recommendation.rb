@@ -17,4 +17,9 @@ class Recommendation
       true
     end
   end
+  
+  def recommendee_name=(name)
+    self.recommendee = User.first(:name => name)
+  end
+  
 end
