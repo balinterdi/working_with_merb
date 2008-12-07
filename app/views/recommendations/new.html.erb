@@ -1,6 +1,7 @@
 <% require_js 'jquery' %>
-<% require_js 'jquery.autocomplete' %>
+<% require_js 'jquery.autocomplete.pack' %>
 <% require_js 'application' %>
+<% require_css 'jquery.autocomplete' %>
 <h1>New recommendation</h1>
 <%= error_messages_for @recommendation %>
 <%= form_for @recommendation, :action => url(:user_recommendations, :user_id => params[:user_id]) do %>
