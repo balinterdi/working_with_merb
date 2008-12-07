@@ -30,4 +30,8 @@ class User
 	  self.role = "admin"
   end
   
+  def self.all_names
+    self.all.collect { |u| u.name }
+  end
+  
 end

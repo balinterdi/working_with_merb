@@ -1,6 +1,5 @@
 TODOS:
 
-- make box on recommendation box accept a name
 - user should not be able to act as another user (e.g see his recommendations, create a recomm. in his name, etc.)
 - making a nice layout for all views (see feather)
 - make name box on recommendation page auto-complete
@@ -12,7 +11,8 @@ end
 
 DONE:
 
+- make box on recommendation box accept a name
 - a user should not be able to recommend himself
 - authenticate for user tasks
 - check that admin actions are only available to admins
-- write specs for actions of recommendations.rb being protected
+- write specs to see if actions of recommendations.rb are protected

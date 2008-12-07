@@ -30,13 +30,14 @@ Merb::Router.prepare do
   # RESTful routes
   # resources :recommendations, :keys => [:user_id, :recommendee_id]
   match("/users", :method => :get).to(:controller => "admin/users")
-  match("/recommendations", :method => :get).to(:controller => "admin/recommendations")	
+  match("/recommendations", :method => :get).to(:controller => "admin/recommendations")
+  match("/users/user_names").to(:controller => "users", :action => "user_names")
     
   resources :users
   resources :recommendations
-	resources :users do |users|
-		users.resources :recommendations
-	end
+  resources :users do |users|
+    users.resources :recommendations
+  end
 
 	# admin routes
   namespace :admin do |admin|

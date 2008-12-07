@@ -56,5 +56,11 @@ class Users < Application
       raise InternalServerError
     end
   end
+  
+  def user_names
+    # User.all_names
+    users_with_matching_name = User.all(:name.like => "#{params[:name]}%")
+    users_with_matching_name.empty? ? nil : users_with_matching_name.first.name
+  end
 
 end # Users
