@@ -3,9 +3,8 @@ class Recommendations < Application
   before :ensure_authenticated
   
   def index
-		find_opts = {}
-		find_opts[:user_id] = params[:user_id] unless params[:user_id].nil?
-    @recommendations = Recommendation.all(find_opts)
+    @user = User.first(:id => params[:user_id])
+    @recommendations = Recommendation.all(:user_id => @user.id)
     display @recommendations
   end
 

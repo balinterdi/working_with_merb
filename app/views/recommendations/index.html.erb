@@ -3,4 +3,5 @@
 	<ul>
 	<%= partial :recommendation, :as => :recommendation, :with => @recommendations %>
 	</ul>
+	<%= link_to "Recommend another user", resource(@user, :recommendations, :new) %>
 </div>

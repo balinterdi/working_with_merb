@@ -27,7 +27,14 @@ describe Recommendation do
 	  @james.recommendations.create(:recommendee => @james)
 	  @james.recommendations.should_not be_valid
   end
-
+  
+  describe "when james recommends joe by his name" do
+    it "recommendee can be got by his name" do
+      @james.recommendations.create(:recommendee_name => @joe.name)
+      @james.recommendations.first.recommendee_name.should == @joe.name
+    end
+  end
+  
   describe "when created by name" do
     it "should be successful if there is only one user with that name" do
       Recommendation.create(:user => @james, :recommendee_name => @joe.name)

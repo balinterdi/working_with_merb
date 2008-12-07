@@ -66,7 +66,12 @@ describe "resource(@user, :recommendations)" do
     				@response.should contain(recommendation.recommendee.name)
     			end
     		end
+    		
+    		it "should have a link to recommend another user" do
+    		  @response.should have_selector("a[href='#{resource(@james, :recommendations, :new)}']")    			
+  		  end
   		end
+  		
   	end	
 	end
 	
@@ -80,11 +85,12 @@ describe "resource(@user, :recommendations)" do
         @response.status.should == 401
       end
     end
+    
     describe "when the user is logged in" do
       before(:each) do
   		  @response = request(url(:perform_login), :method => "PUT", :params => { :login => @james.login, :password => @james.password })
   		  @response = request(resource(@james, :recommendations), :method => "POST", 
-          :params => { :recommendation => { :user_id => @james.id, :recommendee_id => @joe.id }} )        
+          :params => { :recommendation => { :user_id => @james.id, :recommendee_name => @joe.name }} )        
 		  end
 		  
 		  it "redirects to the user's recommendations with the newly recommended user on the page" do

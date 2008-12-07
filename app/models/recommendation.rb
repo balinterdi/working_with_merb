@@ -18,6 +18,10 @@ class Recommendation
     end
   end
   
+  def recommendee_name
+    recommendee ? recommendee.name : nil
+  end
+  
   def recommendee_name=(name)
     self.recommendee = User.first(:name => name)
   end
