@@ -6,6 +6,5 @@
 <%= form_for @recommendation, :action => url(:user_recommendations, :user_id => params[:user_id]) do %>
 	<%= hidden_field :user_id, :value => params[:user_id] %>
 	<div><%= text_field :recommendee_name, :label => "Recommended user" %></div>
-	<ul id="recommendee_names">	</ul>
 	<div><%= submit "Submit" %></div>
 <% end =%>

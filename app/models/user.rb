@@ -30,8 +30,7 @@ class User
 	  self.role = "admin"
   end
   
-  def self.all_names
-    self.all.collect { |u| u.name }
+  def self.all_by_name_portion(name)
+    User.all(:name.like => "%#{name}%")
   end
-  
 end

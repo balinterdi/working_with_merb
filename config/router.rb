@@ -31,7 +31,7 @@ Merb::Router.prepare do
   # resources :recommendations, :keys => [:user_id, :recommendee_id]
   match("/users", :method => :get).to(:controller => "admin/users")
   match("/recommendations", :method => :get).to(:controller => "admin/recommendations")
-  match("/users/user_names").to(:controller => "users", :action => "user_names")
+  match("/users/user_name_search").to(:controller => "users", :action => "user_name_search")
     
   resources :users
   resources :recommendations

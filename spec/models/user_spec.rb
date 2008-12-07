@@ -45,5 +45,26 @@ describe User do
 	  @james.set_admin
 	  @james.should be_admin
   end
+  
+  describe "when looking for a user by his name" do
+    it "should not find any users that does not have the name string" do
+      users_with_x = User.all_by_name_portion('x')
+      users_with_x.should == []
+    end
+    
+    it "should find the users with that substring anywhere in their name" do
+      users_with_j = User.all_by_name_portion('J')
+      users_with_j.should include(@james)
+      users_with_j.should include(@joe)
+    end
+    
+    it "should not be case sensitive" do
+      users_with_j = User.all_by_name_portion('j')
+      users_with_j.should include(@james)
+      users_with_j.should include(@joe)      
+    end
+    
+  end
+    
 
 end

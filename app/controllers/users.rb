@@ -57,10 +57,10 @@ class Users < Application
     end
   end
   
-  def user_names
-    # User.all_names
-    users_with_matching_name = User.all(:name.like => "#{params[:name]}%")
-    users_with_matching_name.empty? ? nil : users_with_matching_name.first.name
+  def user_name_search
+    #FIXME: watch out, SQL injection is possible, the user directly inputs the q param
+    users_with_matching_name = User.all_by_name_portion(params[:q])
+    users_with_matching_name.empty? ? nil : users_with_matching_name.collect { |u| u.name }.join("\n")
   end
 
 end # Users
