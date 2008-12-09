@@ -29,9 +29,10 @@ Merb.logger.info("Compiling routes...")
 Merb::Router.prepare do
   # RESTful routes
   # resources :recommendations, :keys => [:user_id, :recommendee_id]
-  match("/users", :method => :get).to(:controller => "admin/users")
   match("/recommendations", :method => :get).to(:controller => "admin/recommendations")
   match("/users/user_name_search").to(:controller => "users", :action => "user_name_search")
+  match("/users/(:user_id)/recommendations/new/(:recommendee_id)").
+    to(:controller => "recommendations", :action => "new").name("prefilled_user_recommendation")
     
   resources :users
   resources :recommendations

@@ -1,3 +1,7 @@
 <%= tag(:div) do %>
-  <%= tag(:div, @user.login) %>
+	<div>Login: <%= @user.login %></div>
+	<div>Name: <%= @user.name %></div>
+	<div>Email: <%= @user.email %></div>
+	<div>Blog url: <%= link_to @user.blog_url, @user.blog_url %></div>
+	<%= link_to "Recommend this user", url(:prefilled_user_recommendation, :user_id => 1, :recommendee_id => 2) %>	
 <% end =%>

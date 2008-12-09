@@ -11,6 +11,7 @@
  *
  */
 
+// http://docs.jquery.com/Plugins/Autocomplete#Demos
 ;(function($) {
 	
 $.fn.extend({

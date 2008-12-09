@@ -1,5 +1,8 @@
 <h1>Edit user</h1>
-<%= form_for @user do %>
-	<%= text_field :login, :label => 'Login' %>
-	<%= submit "submit" %>	
+<%= form_for @user, :action => resource(@user) do %>
+	<div><%= @user.login %></div>
+	<div><%= text_field :name, :label => 'Name' %></div>
+	<div><%= text_field :email, :label => 'Email' %></div>
+	<div><%= text_field :blog_url, :label => 'Blog url' %></div>
+	<div><%= submit "submit" %>	</div>
 <% end =%>

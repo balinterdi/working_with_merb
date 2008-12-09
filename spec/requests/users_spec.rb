@@ -84,7 +84,10 @@ describe "resource(@user, :edit)", :given => "a user exists" do
       @response = request(resource(User.first, :edit))      
       @response.should be_successful
   		user = User.first
-  		@response.should have_xpath("//input[@value='#{user.login}']")
+  		@response.should contain("#{user.login}")
+  		@response.should have_selector("input[value='#{user.name}']")
+  		@response.should have_selector("input[value='#{user.email}']")
+  		@response.should have_selector("input[value='#{user.blog_url}']")
   		@response.should have_xpath("//input[@type='submit']")
     end
   end
@@ -99,7 +102,9 @@ describe "resource(@user)", :given => "a user exists" do
   
     it "responds successfully" do
       @response.should be_successful
-			@response.should contain(User.first.login)
+			@response.should contain(User.first.name)
+			@response.should contain(User.first.email)
+      @response.should have_selector("a[href='#{url(:prefilled_user_recommendation, :user_id => 1, :recommendee_id => 2)}']")
     end
   end
   
@@ -114,12 +119,12 @@ describe "resource(@user)", :given => "a user exists" do
       end
     end
     
-    describe "if the user is logged in", :given => "an authenticated user" do
+    describe "if the user is logged in", :when => "an authenticated user" do
       it "redirects to the user show action" do
         user = User.first
         @response = request(resource(user), :method => "PUT",
           :params => { :user => {:id => user.id} })
-        @response.should redirect_to(resource(user))
+        @response.should redirect_to(url(:edit_user, :id => user.id))
       end
     end
     
