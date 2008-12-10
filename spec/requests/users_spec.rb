@@ -1,23 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
 describe "resource(:users)" do
-  
-  describe "GET", :given => "an authenticated admin user" do
-    before(:each) do
-      @response = request(resource(:users))
-    end
-    #TODO: /users is routed to /admin/users so this test
-    # is the same as the admin controller one, not very DRY.
-    it "has a list of users" do
-      User.all.each do |u|
-        @response.should contain(u.name)
-        @response.should contain(u.login)
-        @response.should contain(u.email)
-      end
-      
-    end
-  end
-  
+    
   describe "a successful POST" do
     before(:each) do
       User.all.destroy!

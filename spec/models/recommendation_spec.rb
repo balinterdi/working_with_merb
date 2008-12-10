@@ -1,9 +1,5 @@
 require File.join( File.dirname(__FILE__), '..', "spec_helper" )
 
-given "james recommends joe" do
-	@james.recommendations.create(:recommendee => @joe)
-end
-
 describe Recommendation do
   
   before(:each) do
@@ -12,7 +8,11 @@ describe Recommendation do
   	@joe = User.generate(:joe)	  	
   end
     
-	describe "when james recommends joe", :given => "james recommends joe" do	  	      
+	describe "when james recommends joe" do
+	  before(:each) do	    
+    	@james.recommendations.create(:recommendee => @joe)
+    end
+    
 	  it "joe is among james's recommendees" do
 			@james.recommendees.should include(@joe)
 		end
@@ -25,7 +25,7 @@ describe Recommendation do
 
 	it "a user can not recommend himself" do
 	  @james.recommendations.create(:recommendee => @james)
-	  @james.recommendations.should_not be_valid
+	  @james.recommendations.last.should_not be_valid
   end
   
   describe "when james recommends joe by his name" do

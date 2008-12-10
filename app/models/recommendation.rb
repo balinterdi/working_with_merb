@@ -11,7 +11,7 @@ class Recommendation
 	belongs_to :recommendee, :child_key => [:recommendee_id], :class_name => "User"
   
   validates_with_block :recommendee_id do
-    if recommendee_id == user_id
+    if @recommendee_id == @user_id
       [false, "A user can not recommend himself"]
     else
       true
