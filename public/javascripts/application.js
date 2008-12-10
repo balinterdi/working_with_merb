@@ -1,8 +1,4 @@
 // Common JavaScript code across your application goes here.
-function addAjaxAutoCompleter() {
-	$("#recommendation_recommendee_name").autocomplete("/users/user_name_search");
+function addAjaxAutoCompleter(field_id, data_method) {
+	$(field_id).autocomplete(data_method);
 }
-
-$(document).ready(function(){
-	addAjaxAutoCompleter();
-})

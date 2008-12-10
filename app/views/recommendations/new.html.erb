@@ -9,3 +9,9 @@
 	<div><%= text_field :recommendee_name, :label => "Recommended user" %></div>
 	<div><%= submit "Submit" %></div>
 <% end =%>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		addAjaxAutoCompleter('#recommendation_recommendee_name', '/users/user_name_search');
+	})
+</script>

@@ -2,20 +2,25 @@ require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
 describe "resource(:users)" do
   
-  describe "GET", :given => "an authenticated admin user" do
+  describe "GET" do
     before(:each) do
       @response = request(resource(:users))
+      @james = User.gen(:james)
+      @joe = User.gen(:joe)
     end
-    #TODO: /users is routed to /admin/users so this test
-    # is the same as the admin controller one, not very DRY.
-    it "has a list of users" do
-      User.all.each do |u|
-        @response.should contain(u.name)
-        @response.should contain(u.login)
-        @response.should contain(u.email)
-      end
-      
+
+    it "should bring up a page with a search box for users" do
+      @response.should have_selector("input[type='text'][name='user[name]']")
+      @response.should have_selector("input[type='submit']")
     end
+    
+    it "should list users with the user inputted name as substring" do
+      @response = request(url(:user_search), :method => "POST", 
+        :params => { :user => { :name => "J"}} )
+      @response.should contain(@james.name)
+      @response.should contain(@joe.name)
+    end
+    
   end
   
   describe "a successful POST" do
