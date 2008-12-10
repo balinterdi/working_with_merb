@@ -7,11 +7,17 @@
 	<div><%= text_field :name => "user[name]", :id => "user_name", :label => "Start to type user name" %><%= submit :submit %></div>		
 <% end =%>
 
-<ul>
+<div id="user_list">
 	<% @users.each do |u| %>
-		<li><%= u.name %><%= link_to "Recommend this user", url(:prefilled_user_recommendation, :user_id => 1, :recommendee_id => 2) %></li>
+		<div>
+			<%= u.name %>
+			<% if session.authenticated? %>
+				<%= link_to "Recommend this user", 
+				url(:prefilled_user_recommendation, :user_id => session.user.id, :recommendee_id => u.id) %>
+			<% end %>
+		</div>
 	<% end if @users %>
-</ul>
+</div>
 
 <script type="text/javascript">
 	$(document).ready(function(){
