@@ -2,7 +2,7 @@
 <% require_js 'jquery.autocomplete.pack' %>
 <% require_js 'application' %>
 <% require_css 'jquery.autocomplete' %>
-<h1>New recommendation</h1>
+<h1>New recommendation <%= "for #{@recommended_user.name}" if @recommended_user %></h1>
 <%= error_messages_for @recommendation %>
 <%= form_for @recommendation, :action => url(:user_recommendations, :user_id => params[:user_id]) do %>
 	<%= hidden_field :user_id, :value => params[:user_id] %>

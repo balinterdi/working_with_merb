@@ -18,6 +18,7 @@ class Recommendations < Application
     only_provides :html
     @recommendation = Recommendation.new
     @reasons = Reason.all
+    @recommended_user = User.get(params[:recommendee_id]) if params[:recommendee_id]
     display @recommendation
   end
 

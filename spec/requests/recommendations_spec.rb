@@ -1,14 +1,14 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
-describe "resource(@user, :recommendations, :new)", :given => "a user exists" do
-  
-  before(:each) do
-    User.all.destroy!
-    Reason.all.destroy!
-  	@james = User.gen(:james)
-  	@joe = User.gen(:joe)
-  	5.of { Reason.gen }
-  end
+given "reinit fixtures" do
+  User.all.destroy!
+  Reason.all.destroy!
+	@james = User.gen(:james)
+	@joe = User.gen(:joe)
+	5.of { Reason.gen }  
+end
+
+describe "resource(@user, :recommendations, :new)", :given => "reinit fixtures" do
   
   describe "when the user is not logged in" do
     
@@ -21,9 +21,15 @@ describe "resource(@user, :recommendations, :new)", :given => "a user exists" do
     end
   end
   
-  describe "when the user is logged in", :given => "an authenticated user" do
+  describe "when the user is logged in" do
         
-    describe "and the user to be recommended is not provided" do    
+    before(:each) do
+      @response = request(url(:perform_login), :method => "PUT", 
+        :params => { :login => @james.login, :password => @james.password })        
+    end
+    
+    describe "and the user to be recommended is not provided" do
+          
       before(:each) do
     		@response = request(url(:new_user_recommendation, :user_id => @james.id))
       end
@@ -36,20 +42,26 @@ describe "resource(@user, :recommendations, :new)", :given => "a user exists" do
     		@response.should be_successful
     		@response.should have_selector("input[type='text'][name='recommendation[recommendee_name]']")
     	end
-    end
-      	
-  	describe "and the user to be recommended is known" do
-  	  before(:each) do
-  	    @response = request(url(:prefilled_user_recommendation, :user_id => @james.id, :recommendee_id => @joe.id))
-	    end
-	    
-  	  it "should not have an input box to provide the user's name" do
-    		@response.should_not have_selector("input[type='text'][name='recommendation[recommendee_name]']")
-	    end
-	    
-  	end
-  	
-	end
+    end  	    
+  end
+end
+
+describe "url(:prefilled_user_recommendation)", :given => "reinit fixtures" do
+
+  before(:each) do
+    @response = request(url(:perform_login), :method => "PUT", 
+      :params => { :login => @james.login, :password => @james.password })
+    @response = request(url(:prefilled_user_recommendation, :user_id => @james.id, :recommendee_id => @joe.id))
+  end
+
+  it "should not have an input box to provide the user's name" do
+		@response.should_not have_selector("input[type='text'][name='recommendation[recommendee_name]']")
+  end
+  
+  it "should have the name of the user about to be recommended on the page" do
+	  @response.should contain(@joe.name)
+  end
+    		    
 end
 
 describe "resource(@user, :recommendations)" do	
