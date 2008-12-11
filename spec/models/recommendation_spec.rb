@@ -2,12 +2,16 @@ require File.join( File.dirname(__FILE__), '..', "spec_helper" )
 
 describe Recommendation do
   
-  before(:each) do
+  before do
     User.all.destroy!
   	@james = User.generate(:james)
   	@joe = User.generate(:joe)	  	
   end
-    
+
+  before(:each) do
+    Recommendation.all.destroy!
+  end
+  
 	describe "when james recommends joe" do
 	  before(:each) do	    
     	@james.recommendations.create(:recommendee => @joe)
@@ -40,6 +44,19 @@ describe Recommendation do
       Recommendation.create(:user => @james, :recommendee_name => @joe.name)
       @james.recommendees.should include(@joe)
     end
+    
+  end
+  
+  describe "when a reason is given for recommendation" do
+    before(:each) do
+      Recommendation.all.destroy!
+      Reason.all.destroy!
+      @james.recommendations.create(:recommendee => @joe)
+    end
+    
+    it "should be among the reasons for the recommendation" do
+      pending
+    end    
     
   end
   

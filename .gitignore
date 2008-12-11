@@ -2,3 +2,5 @@ log/*
 spec/models/log/*
 spec/requests/log/*
 coverage/
+bin/
+src/
