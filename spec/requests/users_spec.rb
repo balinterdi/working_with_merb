@@ -1,7 +1,44 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
 describe "resource(:users)" do
+  
+  describe "GET" do
+    before(:each) do
+      User.all.destroy!
+      @james = User.gen(:james)
+      @joe = User.gen(:joe)      
+      @response = request(resource(:users))
+    end
+
+    it "should bring up a page with a search box for users" do
+      @response.should have_selector("input[type='text'][name='user[name]']")
+      @response.should have_selector("input[type='submit']")
+    end
     
+    describe "and a search query inputted in the search box" do
+      before(:each) do
+        @response = request(url(:user_search), :method => "POST", 
+          :params => { :user => { :name => "J"}} )
+        end
+        
+      it "should list users with the user inputted name as substring" do
+        @response.should contain(@james.name)
+        @response.should contain(@joe.name)
+      end
+    
+      it "should have a recommendation link if the user is logged in" do
+        @response = request(url(:perform_login), :method => "PUT", 
+          :params => { :login => @james.login, :password => @james.password })
+        @response = request(url(:user_search), :method => "POST", 
+          :params => { :user => { :name => "J"}} )
+        @response.should have_selector("a[href='#{url(:prefilled_user_recommendation,
+         :user_id => @james.id, :recommendee_id => @joe.id)}']")
+      end
+      
+    end
+    
+  end
+  
   describe "a successful POST" do
     before(:each) do
       User.all.destroy!

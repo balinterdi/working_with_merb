@@ -1,10 +1,11 @@
 class Users < Application
   # provides :xml, :yaml, :js
-  before :ensure_authenticated, :exclude => [:new, :create, :show]
-
+  # before :ensure_authenticated, :exclude => [:index, :new, :create, :show, :search]
+  before :ensure_authenticated, :only => [:edit, :update, :destroy]
+  
   def index
-    @users = User.all
-    display @users
+    @users = User.all_by_name_portion(params[:user][:name]) if params[:user]
+    render :index
   end
 
   def show(id)
