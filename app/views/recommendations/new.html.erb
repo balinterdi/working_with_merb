@@ -6,7 +6,15 @@
 <%= error_messages_for @recommendation %>
 <%= form_for @recommendation, :action => url(:user_recommendations, :user_id => params[:user_id]) do %>
 	<%= hidden_field :user_id, :value => params[:user_id] %>
-	<div><%= text_field :recommendee_name, :label => "Recommended user" %></div>
+	<%= hidden_field :recommendee_id, :value => params[:recommendee_id] %>
+	<% unless params[:recommendee_id] %>
+		<div><%= text_field :recommendee_name, :label => "Recommended user" %></div>
+	<% end %>
+	<% @reasons.each do |reason| %>
+		<div>
+		<%= check_box :name => "recommendation[reason_id][]", :boolean => false, :id => "reason_#{reason.id}", :value => reason.id, :label => reason.name %>
+		</div>
+	<% end %>
 	<div><%= submit "Submit" %></div>
 <% end =%>
 

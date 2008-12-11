@@ -26,6 +26,14 @@ User.fixture(:admin) {{
 	:role => "admin",  
 }}
 
+Reason.fixture {{
+  :name => /(\w{2,8}){4}/.gen
+}}
+
 Reason.fixture(:worked_with_him) {{
   :name => 'Worked with him',
+}}
+
+Reason.fixture(:works_in_merb_team) {{
+  :name => 'Works in merb team so must know his tool',
 }}

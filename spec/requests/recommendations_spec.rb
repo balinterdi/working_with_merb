@@ -2,6 +2,14 @@ require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
 
 describe "resource(@user, :recommendations, :new)", :given => "a user exists" do
   
+  before(:each) do
+    User.all.destroy!
+    Reason.all.destroy!
+  	@james = User.gen(:james)
+  	@joe = User.gen(:joe)
+  	5.of { Reason.gen }
+  end
+  
   describe "when the user is not logged in" do
     
   	before(:each) do
@@ -14,24 +22,42 @@ describe "resource(@user, :recommendations, :new)", :given => "a user exists" do
   end
   
   describe "when the user is logged in", :given => "an authenticated user" do
-    
-    before(:each) do
-    		@response = request(url(:new_user_recommendation, :user_id => User.first.id))
-      end
         
-  	it "responds successfully" do
-  		@response.should be_successful
-  		@response.should have_xpath("//input[@type='text']")
+    describe "and the user to be recommended is not provided" do    
+      before(:each) do
+    		@response = request(url(:new_user_recommendation, :user_id => @james.id))
+      end
+      
+      it "should have checkboxes for giving the reason for the recommendation" do
+        @response.should have_selector("input[type='checkbox'][name='recommendation[reason_id][]']")
+      end
+      
+    	it "should have an input box to give the recommended users' name" do
+    		@response.should be_successful
+    		@response.should have_selector("input[type='text'][name='recommendation[recommendee_name]']")
+    	end
+    end
+      	
+  	describe "and the user to be recommended is known" do
+  	  before(:each) do
+  	    @response = request(url(:prefilled_user_recommendation, :user_id => @james.id, :recommendee_id => @joe.id))
+	    end
+	    
+  	  it "should not have an input box to provide the user's name" do
+    		@response.should_not have_selector("input[type='text'][name='recommendation[recommendee_name]']")
+	    end
+	    
   	end
   	
 	end
 end
 
 describe "resource(@user, :recommendations)" do	
-	before(:each) do
-	  User.all.destroy!
-		@james = User.gen(:james)
-		@joe = User.gen(:joe)
+ 
+  before(:each) do
+    User.all.destroy!
+  	@james = User.gen(:james)
+  	@joe = User.gen(:joe)
   end
   
 	describe "GET" do
@@ -55,13 +81,8 @@ describe "resource(@user, :recommendations)" do
             :params => { :recommendation => {:user_id => @james.id, :recommendee_id => @joe.id }})  			
     			@response = request(resource(@james, :recommendations))
   		  end
-          
-    		it "shows a list of the user's recommendations" do
-    		  @response.should be_successful
-    			@response.should have_xpath("//ul//li")
-    		end
-		
-    		it "the list contains the names of the recommended users" do
+          		
+    		it "should list the recommended users' names" do
     			@james.recommendations.each do |recommendation|
     				@response.should contain(recommendation.recommendee.name)
     			end

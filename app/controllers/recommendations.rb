@@ -17,6 +17,7 @@ class Recommendations < Application
   def new
     only_provides :html
     @recommendation = Recommendation.new
+    @reasons = Reason.all
     display @recommendation
   end
 
