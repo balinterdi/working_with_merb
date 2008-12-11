@@ -25,3 +25,7 @@ User.fixture(:admin) {{
 	:name  => 'Admin User',
 	:role => "admin",  
 }}
+
+Reason.fixture(:worked_with_him) {{
+  :name => 'Worked with him',
+}}

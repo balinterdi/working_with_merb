@@ -51,11 +51,15 @@ describe Recommendation do
     before(:each) do
       Recommendation.all.destroy!
       Reason.all.destroy!
-      @james.recommendations.create(:recommendee => @joe)
+      @recommendation = Recommendation.create(:user => @james, :recommendee => @joe)
+      @reason = Reason.gen(:worked_with_him)
+      # @james.recommendations.create(:recommendee => @joe)
+      @james.recommendations << @recommendation
+      @james.recommendations.first.reasons << @reason
     end
     
     it "should be among the reasons for the recommendation" do
-      pending
+      @james.recommendations.first.reasons.first.should == @reason
     end    
     
   end
