@@ -5,11 +5,14 @@ describe Recommendation do
   before do
     User.all.destroy!
   	@james = User.generate(:james)
-  	@joe = User.generate(:joe)	  	
+  	@joe = User.generate(:joe)
   end
 
   before(:each) do
     Recommendation.all.destroy!
+    Reason.all.destroy!
+    @worked_with_him = Reason.gen(:worked_with_him)
+    @works_in_merb_team = Reason.gen(:works_in_merb_team)      	
   end
   
 	describe "when james recommends joe" do
@@ -49,19 +52,36 @@ describe Recommendation do
   
   describe "when a reason is given for recommendation" do
     before(:each) do
-      Recommendation.all.destroy!
-      Reason.all.destroy!
       @recommendation = Recommendation.create(:user => @james, :recommendee => @joe)
-      @reason = Reason.gen(:worked_with_him)
-      # @james.recommendations.create(:recommendee => @joe)
       @james.recommendations << @recommendation
-      @james.recommendations.first.reasons << @reason
+      @james.recommendations.first.reasons << @worked_with_him
     end
     
     it "should be among the reasons for the recommendation" do
-      @james.recommendations.first.reasons.first.should == @reason
+      @james.recommendations.first.reasons.first.should == @worked_with_him
     end    
     
+  end
+  
+  describe "when creating reasons through the reason_attributes attribute" do
+    before(:each) do
+      @recommendation = Recommendation.create(:user => @james, :recommendee => @joe)
+      @recommendation.reason_attributes = [@worked_with_him.id, @works_in_merb_team.id]
+    end
+    
+    it "the new recommendation should have the given reasons associated with it" do
+      @recommendation.reasons.should include(@worked_with_him)
+      @recommendation.reasons.should include(@works_in_merb_team)
+    end
+    
+    it "the recommending user should see these reasons for the recommendation" do
+      # if I do not call the reason_attributes= on the local variable first,
+      # it does not pass (because of var. names pointing to diff. memory addresses)
+      rec = @james.recommendations.first
+      rec.reason_attributes = [@worked_with_him.id, @works_in_merb_team.id]
+      @james.recommendations.first.reasons.should include(@worked_with_him)
+      @james.recommendations.first.reasons.should include(@works_in_merb_team)
+    end
   end
   
 end

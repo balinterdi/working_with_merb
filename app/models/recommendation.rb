@@ -26,4 +26,10 @@ class Recommendation
     self.recommendee = User.first(:name => name)
   end
   
+  def reason_attributes=(reason_attrs)
+    reason_attrs.each do |reason_id|
+      self.reasons << Reason.get(reason_id)
+    end
+  end
+  
 end

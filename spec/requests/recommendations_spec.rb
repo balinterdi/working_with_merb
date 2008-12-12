@@ -5,7 +5,7 @@ given "reinit fixtures" do
   Reason.all.destroy!
 	@james = User.gen(:james)
 	@joe = User.gen(:joe)
-	5.of { Reason.gen }  
+  5.of { Reason.gen }  
 end
 
 describe "resource(@user, :recommendations, :new)", :given => "reinit fixtures" do
@@ -35,7 +35,7 @@ describe "resource(@user, :recommendations, :new)", :given => "reinit fixtures" 
       end
       
       it "should have checkboxes for giving the reason for the recommendation" do
-        @response.should have_selector("input[type='checkbox'][name='recommendation[reason_id][]']")
+        @response.should have_selector("input[type='checkbox'][name='recommendation[reason_attributes][]']")
       end
       
     	it "should have an input box to give the recommended users' name" do
@@ -46,22 +46,48 @@ describe "resource(@user, :recommendations, :new)", :given => "reinit fixtures" 
   end
 end
 
-describe "url(:prefilled_user_recommendation)", :given => "reinit fixtures" do
+describe "url(:new_prefilled_user_recommendation)", :given => "reinit fixtures" do
 
   before(:each) do
     @response = request(url(:perform_login), :method => "PUT", 
       :params => { :login => @james.login, :password => @james.password })
-    @response = request(url(:prefilled_user_recommendation, :user_id => @james.id, :recommendee_id => @joe.id))
+    @response = request(url(:new_prefilled_user_recommendation, :user_id => @james.id, :recommendee_id => @joe.id))
   end
 
   it "should not have an input box to provide the user's name" do
 		@response.should_not have_selector("input[type='text'][name='recommendation[recommendee_name]']")
   end
   
-  it "should have the name of the user about to be recommended on the page" do
+  it "should contain the name of the user about to be recommended on the page" do
 	  @response.should contain(@joe.name)
   end
     		    
+end
+
+describe "url(:prefilled_user_recommendation)", :given => "reinit fixtures" do
+  before(:each) do
+    @reas1, @reas2 = Reason.gen(:worked_with_him), Reason.gen(:works_in_merb_team)
+    @response = request(url(:perform_login), :method => "PUT", 
+      :params => { :login => @james.login, :password => @james.password })
+
+    @response = request(url(:prefilled_user_recommendation, :user_id => @james.id, :recommendee_id => @joe.id), :method => "POST",
+                :params => {
+                  :user_id => @james.id, :recommendee_id => @joe.id,
+                  :recommendation => {
+                    :user_id => @james.id, :recommendee_id => @joe.id,
+                    :reason_attributes => [@reas1.id, @reas2.id]
+                  }
+                })
+  end
+  
+  it "a POST should create a recommendation and the recommendation's reasons" do
+    @response.should redirect_to(resource(@james, :recommendations))
+    @james.recommendations.first.recommendee.should == @joe
+    @james.recommendations.first.reasons.count.should == 2
+    @james.recommendations.first.reasons.should include(@reas1)
+    @james.recommendations.first.reasons.should include(@reas2)
+  end
+  
 end
 
 describe "resource(@user, :recommendations)" do	
