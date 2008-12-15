@@ -15,9 +15,7 @@
       <div id="left-container">
         <div id="navigation-panel">
           <ul>
-            <li><a href="/users/11">View my profile</a></li>
-            <li><a href="/users/search">Search users</a></li>
-            <li><a href="/logout">Logout</a></li>
+            <%= partial "shared/sidebar_links", :with => left_sidebar_links, :as => :link %>
           </ul>
         </div>        
       </div>
@@ -28,7 +26,7 @@
         <%= catch_content :for_layout %>        
       </div>
       <div id="footer-container">
-        Balint Erdi (balint@bucionrails.com) 2008.
+        Balint Erdi (<a href="mailto:balint@bucionrails.com">balint@bucionrails.com</a>) 2008.
       </div>
     </div>
   </body>
