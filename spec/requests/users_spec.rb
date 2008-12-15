@@ -31,7 +31,7 @@ describe "resource(:users)" do
           :params => { :login => @james.login, :password => @james.password })
         @response = request(url(:user_search), :method => "POST", 
           :params => { :user => { :name => "J"}} )
-        @response.should have_selector("a[href='#{url(:prefilled_user_recommendation,
+        @response.should have_selector("a[href='#{url(:new_prefilled_user_recommendation,
          :user_id => @james.id, :recommendee_id => @joe.id)}']")
       end
       
@@ -124,7 +124,7 @@ describe "resource(@user)", :given => "a user exists" do
       @response.should be_successful
       @response.should contain(User.first.name)
       @response.should contain(User.first.email)
-      @response.should have_selector("a[href='#{url(:prefilled_user_recommendation, :user_id => 1, :recommendee_id => 2)}']")
+      @response.should have_selector("a[href='#{url(:new_prefilled_user_recommendation, :user_id => 1, :recommendee_id => 2)}']")
     end
   end
   

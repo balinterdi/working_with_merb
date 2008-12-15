@@ -6,6 +6,6 @@ describe "/" do
   end
   
   it "goes to the landing page of the site" do
-    @response.should contain("Welcome to Working with Merb!")
+    @response.should contain("Welcome to")
   end
 end

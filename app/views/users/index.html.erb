@@ -4,23 +4,23 @@
 <% require_css 'jquery.autocomplete' %>
 <h1>Search for a user</h1>
 <%= form :action => '/users/search' do %>
-	<div><%= text_field :name => "user[name]", :id => "user_name", :label => "Start to type user name" %><%= submit :submit %></div>		
+  <div><%= text_field :name => "user[name]", :id => "user_name", :label => "Start to type user name" %><%= submit :submit %></div>    
 <% end =%>
 
 <div id="user_list">
-	<% @users.each do |u| %>
-		<div>
-			<%= u.name %>
-			<% if session.authenticated? %>
-				<%= link_to "Recommend this user", 
-				url(:new_prefilled_user_recommendation, :user_id => session.user.id, :recommendee_id => u.id) %>
-			<% end %>
-		</div>
-	<% end if @users %>
+  <% @users.each do |u| %>
+    <div>
+      <%= u.name %>
+      <% if session.authenticated? %>
+        <%= link_to "Recommend this user", 
+        url(:new_prefilled_user_recommendation, :user_id => session.user.id, :recommendee_id => u.id) %>
+      <% end %>
+    </div>
+  <% end if @users %>
 </div>
 
 <script type="text/javascript">
-	$(document).ready(function(){
-		addAjaxAutoCompleter('#user_name', '/users/user_name_search');
-	})
+  $(document).ready(function(){
+    addAjaxAutoCompleter('#user_name', '/users/user_name_search');
+  })
 </script>
