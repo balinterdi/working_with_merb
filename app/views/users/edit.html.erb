@@ -1,8 +1,15 @@
-<h1>Edit user</h1>
-<%= form_for @user, :action => resource(@user) do %>
-	<div><%= @user.login %></div>
-	<div><%= text_field :name, :label => 'Name' %></div>
-	<div><%= text_field :email, :label => 'Email' %></div>
-	<div><%= text_field :blog_url, :label => 'Blog url' %></div>
-	<div><%= submit "submit" %>	</div>
-<% end =%>
+<% throw_content :form_title do %>
+    <%= "Habubi" %>
+<% end %>
+
+<fieldset>
+    <legend><%= catch_content :form_title %></legend>
+    <%= form_for @user, :action => resource(@user) do %>
+    <ul>
+        <li><%= text_field :name, :label => 'Name' %></li>
+        <li><%= text_field :email, :label => 'Email' %></li>
+        <li><%= text_field :blog_url, :label => 'Blog url' %></li>
+        <li><%= submit "submit" %> </li>
+    </ul>
+    <% end =%>
+</fieldset>

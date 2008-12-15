@@ -82,12 +82,12 @@ describe "resource(:users, :new)" do
   
   it "responds successfully" do
     @response.should be_successful
-		@response.should have_selector("input#user_name[type='text']")
-		@response.should have_selector("input#user_email[type='text']")
-		@response.should have_selector("input#user_login[type='text']")
-		@response.should have_selector("input#user_password[type='password']")
-		@response.should have_selector("input#user_password_confirmation[type='password']")		
-		@response.should have_selector("input[type='submit']")
+    @response.should have_selector("input#user_name[type='text']")
+    @response.should have_selector("input#user_email[type='text']")
+    @response.should have_selector("input#user_login[type='text']")
+    @response.should have_selector("input#user_password[type='password']")
+    @response.should have_selector("input#user_password_confirmation[type='password']")   
+    @response.should have_selector("input[type='submit']")
   end
 end
 
@@ -104,12 +104,11 @@ describe "resource(@user, :edit)", :given => "a user exists" do
     it "responds successfully" do
       @response = request(resource(User.first, :edit))      
       @response.should be_successful
-  		user = User.first
-  		@response.should contain("#{user.login}")
-  		@response.should have_selector("input[value='#{user.name}']")
-  		@response.should have_selector("input[value='#{user.email}']")
-  		@response.should have_selector("input[value='#{user.blog_url}']")
-  		@response.should have_xpath("//input[@type='submit']")
+      user = User.first
+      @response.should have_selector("input[value='#{user.name}']")
+      @response.should have_selector("input[value='#{user.email}']")
+      @response.should have_selector("input[value='#{user.blog_url}']")
+      @response.should have_xpath("//input[@type='submit']")
     end
   end
 end
@@ -123,8 +122,8 @@ describe "resource(@user)", :given => "a user exists" do
   
     it "responds successfully" do
       @response.should be_successful
-			@response.should contain(User.first.name)
-			@response.should contain(User.first.email)
+      @response.should contain(User.first.name)
+      @response.should contain(User.first.email)
       @response.should have_selector("a[href='#{url(:prefilled_user_recommendation, :user_id => 1, :recommendee_id => 2)}']")
     end
   end

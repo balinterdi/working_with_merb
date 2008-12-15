@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="../stylesheets/master.css" type="text/css" media="screen" title="no title" charset="utf-8">    
+    <title>Edit user / Working with Merb</title>    
+</head>
+<body id="edit_user">
+  <div id="container">
+    <div id="header-container">
+        <h1>Working with Merb</h1>
+    </div>
+    <div id="left-container">
+      <div id="navigation-panel">
+        <ul>
+          <li><a href="/users/11">View my profile</a></li>
+          <li><a href="/users/search">Search users</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="main-container">
+      <form action="/users/11/" method="post">
+        <fieldset>
+           <legend>Edit profile</legend>
+           <ul>
+              <li>
+                  <label for="user_name">Name</label>
+                  <input id="user_name" name="user[name]" size="30" class="text" value="James Duncan" />
+              </li>
+              <li>
+                  <label for="user_email">Email</label>
+                  <input type="text" class="text" value="james@email.org" name="user[email]" id="user_email"/>
+              </li>
+              <li>
+                  <label for="user_blog_url">Blog url</label>
+                  <input type="text" class="text" value="" name="user[blog_url]" id="user_blog_url"/>            
+              </li>
+          </ul>
+          <input class="submit_button" name="commit" type="submit" value="Submit" />
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
