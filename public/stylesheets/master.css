@@ -84,6 +84,7 @@ input[type='submit'], button {
 End: Form layout with fieldset rules
 */
 
+/*BEGIN: Master layout related rules*/
 #container {
   width: 80%;
   text-align: left;
@@ -195,6 +196,7 @@ a:hover {
   margin-left: 3.0em;
 }
 
+/*END: Master layout related rules*/
 #site_title {
 /*  font-variant: all-caps;*/
   font-size: 3em;
@@ -208,4 +210,11 @@ a:hover {
 
 .message_error {
   color: red;
+}
+
+#recommended-users {
+  margin-top: 20px;
+}
+#recommended-by-users {
+  margin-top: 20px;
 }

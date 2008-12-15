@@ -1,11 +1,20 @@
+<% throw_content :html_title do %>
+  <%= get_html_title("Register") %>
+<% end %>
+
 <h1>New user</h1>
 
 <%= error_messages_for @user %>
-<%= form_for @user, :action => resource(:users) do %>
-	<div><%= text_field :name, :label => 'Name' %></div>
-	<div><%= text_field :email, :label => 'Email' %></div>
-	<div><%= text_field :login, :label => 'Login' %></div>
-	<div><%= password_field :password, :label  => 'Password' %></div>
-	<div><%= password_field :password_confirmation, :label  => 'Password again' %></div>
-	<%= submit "submit" %>
-<% end =%>
+<fieldset>
+  <legend><%= catch_content :form_title %></legend>
+  <%= form_for @user, :action => resource(:users) do %>
+  <ul>
+  	<li><%= text_field :name, :label => 'Name' %></li>
+  	<li><%= text_field :email, :label => 'Email' %></li>
+  	<li><%= text_field :login, :label => 'Login' %></li>
+  	<li><%= password_field :password, :label  => 'Password' %></li>
+  	<li><%= password_field :password_confirmation, :label  => 'Password again' %></li>
+    <li><%= submit "submit" %></li>
+	</ul>
+  <% end =%>
+</fieldset>

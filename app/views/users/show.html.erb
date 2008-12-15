@@ -1,7 +1,25 @@
-<%= tag(:div) do %>
-	<div>Login: <%= @user.login %></div>
-	<div>Name: <%= @user.name %></div>
-	<div>Email: <%= @user.email %></div>
-	<div>Blog url: <%= link_to @user.blog_url, @user.blog_url %></div>
-	<%= link_to "Recommend this user", url(:new_prefilled_user_recommendation, :user_id => 1, :recommendee_id => 2) %>	
-<% end =%>
+<% throw_content :html_title do %>
+  <%= get_html_title(@user.name) %>
+<% end %>
+
+<div>
+  <div>Login: <%= @user.login %></div>
+  <div>Name: <%= @user.name %></div>
+  <div>Email: <%= @user.email %></div>
+  <div>Blog url: <%= link_to @user.blog_url, @user.blog_url %></div>
+  <%= link_to "Recommend this user", url(:new_prefilled_user_recommendation, :user_id => 1, :recommendee_id => 2) %>
+  <div id="recommended-users">
+    <div><%= "#{@user.name} recommends (#{@user.recommendees.count}):" %></div>
+    <% @user.recommendees.each do |r| %>
+      <%= link_to r.name, resource(r) %>
+    <% end %>
+  </div>
+  
+  <div id="recommended-by-users">
+    <div><%= "#{@user.name} is recommended by (#{@user.recommended_by.count}):" %></div>
+    <% @user.recommended_by.each do |r| %>
+      <%= link_to r.name, resource(r) %>
+    <% end %>
+  </div>
+  
+</div>

@@ -2,6 +2,9 @@
 <% require_js 'jquery.autocomplete.pack' %>
 <% require_js 'application' %>
 <% require_css 'jquery.autocomplete' %>
+<% throw_content :html_title do %>
+  <%= get_html_title("New recommendation") %>
+<% end %>
 <h1>New recommendation <%= "for #{@recommended_user.name}" if @recommended_user %></h1>
 <%= error_messages_for @recommendation %>
 <%= form_for @recommendation, :action => url(:prefilled_user_recommendation, :user_id => params[:user_id], :recommendee_id => params[:recommendee_id]) do %>

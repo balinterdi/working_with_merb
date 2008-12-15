@@ -117,15 +117,43 @@ describe "resource(@user)", :given => "a user exists" do
   
   describe "GET" do
     before(:each) do
+      # puts "XXX requesting user resoruce"
       @response = request(resource(User.first))
     end
   
     it "responds successfully" do
       @response.should be_successful
+    end
+    it "should contain user's name and email address" do
       @response.should contain(User.first.name)
       @response.should contain(User.first.email)
+    end
+    it "should have a link to recommend this user" do
       @response.should have_selector("a[href='#{url(:new_prefilled_user_recommendation, :user_id => 1, :recommendee_id => 2)}']")
     end
+    
+    describe "when there are recommendations" do
+      before(:each) do
+        # puts "XXX when there are recommendations"
+        User.all.destroy!
+        @james = User.gen(:james)
+        @joe = User.gen(:joe)
+        @admin = User.gen(:admin)
+        @james.recommendations.create(:recommendee => @joe)
+        @james.recommendations.create(:recommendee => @admin)
+        @joe.recommendations.create(:recommendee => @james)
+        @response = request(resource(@james))
+      end
+      
+      it "should have a list of the users this user recommended" do
+        @response.should have_selector("div#recommended-users a[href='#{resource(@joe)}']")
+        @response.should have_selector("div#recommended-users a[href='#{resource(@admin)}']")
+      end
+      it "should have a list of the users that recommended this user" do
+        @response.should have_selector("div#recommended-by-users a[href='#{resource(@joe)}']")
+      end
+      
+    end # when there are recommendations
   end
   
   describe "PUT" do

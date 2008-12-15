@@ -11,8 +11,14 @@ module Merb
         links << { :url => url(:logout), :text => "Logout" }
       else
         links << { :url => url(:new_user), :text => "Register"}
+        links << { :url => url(:login), :text => "Login"}
       end
       links        
     end
+    
+    def get_html_title(title)
+      "Working with Merb :: #{title}"
+    end
+    
   end
 end

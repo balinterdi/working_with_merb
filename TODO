@@ -1,0 +1,21 @@
+TODOS:
+
+- make a nice user/show template with the users that this user recommended and the users that recommended him.
+- make some ugly forms nicer (e.g login form which comes from merb-auth-slice-password)
+- add country to user's attributes and to forms
+- user should not be able to act as another user (e.g see his recommendations, create a recomm. in his name, etc.)
+- "given" blocks cause more pain than help since they destroy and recreate users so user instances reference other objects and that makes tests brittle. Replace them/think about how/when they could be used well. It is probably better to have spec_helper functions that can be passed object instances, e.g:
+
+def do_login(user)
+	response = request(url(:perform_login), login = user.login, password = user.password)
+end
+
+DONE:
+
+- making a nice layout for all views (see feather)
+- make box on recommendation box accept a name
+- a user should not be able to recommend himself
+- authenticate for user tasks
+- check that admin actions are only available to admins
+- write specs to see if actions of recommendations.rb are protected
+- make name box on recommendation page auto-complete

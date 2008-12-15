@@ -2,6 +2,10 @@
 <% require_js 'jquery.autocomplete.pack' %>
 <% require_js 'application' %>
 <% require_css 'jquery.autocomplete' %>
+<% throw_content :html_title do %>
+  <%= get_html_title("Search user") %>
+<% end %>
+
 <h1>Search for a user</h1>
 <%= form :action => '/users/search' do %>
   <div><%= text_field :name => "user[name]", :id => "user_name", :label => "Start to type user name" %><%= submit :submit %></div>    
