@@ -8,6 +8,13 @@ end
 
 describe "/admin/users" do
   
+  before(:each) do
+    User.all.destroy!
+    @james = User.generate(:james)
+    @joe = User.generate(:joe)
+    @admin = User.generate(:admin)
+  end
+  
   describe "GET" do
     
     describe "when the user is not authenticated" do
@@ -17,21 +24,28 @@ describe "/admin/users" do
       end
     end
     
-    describe "when a normal user is logged in", :given => "an authenticated user" do
+    describe "when a normal user is logged in" do
+      before(:each) do
+        login(@james)
+        @response = request(url(:admin_users))
+      end
       it "he should be denied access to the page" do
-        response = request(url(:admin_users)) 
-        response.status.should == 401
+        @response.status.should == 401
       end
     end
 
-    describe "when an admin user is logged in", :given => "an authenticated admin user" do
+    describe "when an admin user is logged in" do
+      before(:each) do
+        login(@admin)
+        @response = request(url(:admin_users)) 
+      end
+      
       it "should show a list of all users" do
-        response = request(url(:admin_users)) 
-        response.should be_successful
+        @response.should be_successful
         User.all.each do |u|
-          response.should contain(u.name)
-          response.should contain(u.login)
-          response.should contain(u.email)
+          @response.should contain(u.name)
+          @response.should contain(u.login)
+          @response.should contain(u.email)
         end
       end
     end
