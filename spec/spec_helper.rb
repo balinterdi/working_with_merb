@@ -24,6 +24,11 @@ Spec::Runner.configure do |config|
 
 end
 
+def login(user)
+  @response = request(url(:perform_login), :method => "PUT", 
+    :params => { :login => user.login, :password => user.password })
+end
+
 given "there are no users" do
 	User.all.destroy!
 end

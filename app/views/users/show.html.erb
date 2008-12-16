@@ -7,7 +7,7 @@
   <div>Name: <%= @user.name %></div>
   <div>Email: <%= @user.email %></div>
   <div>Blog url: <%= link_to @user.blog_url, @user.blog_url %></div>
-  <%= link_to "Recommend this user", url(:new_prefilled_user_recommendation, :user_id => 1, :recommendee_id => 2) %>
+  <%= link_to "Recommend this user", url(:new_prefilled_user_recommendation, :user_id => session.user.id, :recommendee_id => @user.id) unless session.user.nil? %>
   <div id="recommended-users">
     <div><%= "#{@user.name} recommends (#{@user.recommendees.count}):" %></div>
     <% @user.recommendees.each do |r| %>

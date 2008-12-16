@@ -27,9 +27,8 @@ describe "/" do
   end
   
   describe "when a user is logged in" do
-    before(:each) do      
-      @response = request(url(:perform_login), :method => "PUT", 
-        :params => { :login => @james.login, :password => @james.password })
+    before(:each) do
+      login(@james)
       @response = request("/")       
     end
     
