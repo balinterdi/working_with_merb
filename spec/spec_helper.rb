@@ -25,12 +25,12 @@ Spec::Runner.configure do |config|
 end
 
 def login(user)
-  @response = request(url(:perform_login), :method => "PUT", 
+  request(url(:perform_login), :method => "PUT", 
     :params => { :login => user.login, :password => user.password })
 end
 
 given "there are no users" do
-	User.all.destroy!
+  User.all.destroy!
 end
 
 given "a user exists" do
@@ -46,23 +46,22 @@ given "an authenticated user" do
 end
 
 given "two users exist" do
-	User.all.destroy!
-	User.gen(:james)
-	User.gen(:joe)
+  User.all.destroy!
+  User.gen(:james)
+  User.gen(:joe)
 end
 
 given "an authenticated admin user" do
-  # User.all.destroy!
+  puts "XXX AN AUTHENTICATED ADMIN USER"
   admin = User.gen(:admin)
   response = request(url(:perform_login), :method => "PUT", :params => { :login => admin.login, :password => admin.password })
 end
 
 given "a user recommends another user" do
-	User.all.destroy!
+  User.all.destroy!
   Recommendation.all.destroy!
-	james = User.generate(:james)
-	puts "XXX james's id: #{james.id}"
-	joe = User.generate(:joe)
+  james = User.generate(:james)
+  joe = User.generate(:joe)
   request(resource(james, :recommendations), :method => "POST", 
     :params => { :recommendation => {:user_id => james.id, :recommendee_id => joe.id }})
 end

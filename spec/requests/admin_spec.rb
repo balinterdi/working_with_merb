@@ -8,7 +8,7 @@ end
 
 describe "/admin/users" do
   
-  describe "GET", :given => "two users exist" do
+  describe "GET" do
     
     describe "when the user is not authenticated" do
       it "denies access to that page" do
@@ -18,14 +18,14 @@ describe "/admin/users" do
     end
     
     describe "when a normal user is logged in", :given => "an authenticated user" do
-      it "denies access to that page" do
+      it "he should be denied access to the page" do
         response = request(url(:admin_users)) 
         response.status.should == 401
       end
     end
 
     describe "when an admin user is logged in", :given => "an authenticated admin user" do
-      it "shows a list of all users" do
+      it "should show a list of all users" do
         response = request(url(:admin_users)) 
         response.should be_successful
         User.all.each do |u|
@@ -43,22 +43,29 @@ end
 describe "/admin/recommendations" do
   before(:each) do
     User.all.destroy!
-  	@james = User.generate(:james)
-  	@joe = User.generate(:joe)	  	
+    @james = User.generate(:james)
+    @joe = User.generate(:joe)
   end
     
   describe "GET" do
-    
+        
     describe "when the user is not authenticated" do
-      it "denies access to that page" do
+      before(:each) do
         response = request(url(:admin_recommendations)) 
+      end
+      
+      it "he should be denied access to the page" do
         response.status.should == 401
       end
     end
     
-    describe "when a normal user is logged in", :given => "an authenticated user" do
-      it "denies access to that page" do
+    describe "when a normal user is logged in" do
+      before(:each) do
+        login(@james)
         response = request(url(:admin_recommendations)) 
+      end
+      
+      it "he should be denied access to the page" do
         response.status.should == 401
       end
     end
@@ -66,23 +73,20 @@ describe "/admin/recommendations" do
     describe "when an admin user is logged in" do
       
       before(:each) do
-        # @james.recommendations.create(:recommendee => @joe)
         User.all.destroy!
         Recommendation.all.destroy!
         SpecPopulator.populate!(:users => 8, :recommendations => 5)
-        # puts "XXX User ids: #{User.all.collect {|u| u.id}.inspect}"
-        # puts "XXX Recomendation ids: #{Recommendation.all.collect {|r| [r.user_id, r.recommendee_id]}.inspect }"
+        @admin = User.generate(:admin)
+        login(@admin)
+        @response = request(url(:admin_recommendations))
       end
       
-      describe "and there are recommendations", :given => "an authenticated admin user" do        
-        it "shows a list of all recommendations" do
-          response = request(url(:admin_recommendations)) 
-          response.should be_successful
-          2.times do
-            rec = Recommendation.pick
-            response.body.should contain(rec.user.name)
-            response.body.should contain(rec.recommendee.name)
-          end
+      it "should show a list of all recommendations" do
+        @response.should be_successful
+        2.times do
+          rec = Recommendation.pick
+          @response.body.should contain(rec.user.name)
+          @response.body.should contain(rec.recommendee.name)
         end
       end
       
